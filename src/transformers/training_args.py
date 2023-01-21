@@ -133,6 +133,8 @@ class OptimizerNames(ExplicitEnum):
     """
 
     ADAMW_HF = "adamw_hf"
+    DADAPT_ADAM = "dadapt_adam"
+    DADAPT_ADAMW = "dadapt_adamw"
     ADAMW_TORCH = "adamw_torch"
     ADAMW_TORCH_XLA = "adamw_torch_xla"
     ADAMW_APEX_FUSED = "adamw_apex_fused"
@@ -140,7 +142,9 @@ class OptimizerNames(ExplicitEnum):
     ADAMW_BNB = "adamw_bnb_8bit"
     ADAMW_ANYPRECISION = "adamw_anyprecision"
     SGD = "sgd"
+    DADAPT_SGD = "dadapt_sgd"
     ADAGRAD = "adagrad"
+    DADAPT_ADAGRAD = "dadapt_adagrad"
 
 
 @dataclass

@@ -35,6 +35,10 @@ from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Un
 
 from tqdm.auto import tqdm
 
+from dadaptation.dadapt_adagrad import DAdaptAdaGrad
+from dadaptation.dadapt_adam import DAdaptAdam
+from dadaptation.dadapt_sgd import DadaptSGD
+
 
 # Integrations must be imported before ML frameworks:
 from .integrations import (  # isort: split
@@ -1085,6 +1089,13 @@ class Trainer:
         if args.optim == OptimizerNames.ADAFACTOR:
             optimizer_cls = Adafactor
             optimizer_kwargs.update({"scale_parameter": False, "relative_step": False})
+        elif args.optim == OptimizerNames.DADAPT_ADAM:
+            optimizer_cls = DAdaptAdam
+            optimizer_kwargs.update(adam_kwargs)
+        elif args.optim == OptimizerNames.DADAPT_ADAMW:
+            optimizer_cls = DAdaptAdam
+            adam_kwargs['decouple'] = True
+            optimizer_kwargs.update(adam_kwargs)
         elif args.optim == OptimizerNames.ADAMW_HF:
             from .optimization import AdamW
 
@@ -1141,8 +1152,12 @@ class Trainer:
                 raise ValueError("Please install https://github.com/pytorch/torchdistx")
         elif args.optim == OptimizerNames.SGD:
             optimizer_cls = torch.optim.SGD
+        elif args.optim == OptimizerNames.DADAPT_SGD:
+            optimizer_cls = DadaptSGD
         elif args.optim == OptimizerNames.ADAGRAD:
             optimizer_cls = torch.optim.Adagrad
+        elif args.optim == OptimizerNames.DADAPT_ADAGRAD:
+            optimizer_cls = DAdaptAdaGrad
         else:
             raise ValueError(f"Trainer cannot instantiate unsupported optimizer: {args.optim}")
         return optimizer_cls, optimizer_kwargs
